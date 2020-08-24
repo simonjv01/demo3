@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import Container from './Container';
 import './App.css';
 import { getAllStudents } from './client'; 
 import {
   Table
 }  from 'antd';
+import Avatar from 'antd/lib/avatar/avatar';
+
 
 class App extends Component {
 
@@ -35,6 +38,16 @@ class App extends Component {
 
       const columns = [
         {
+          title: '',
+          key: 'avatar',
+          render: (text, student) => (
+            <Avatar size='large'>
+              {`${student.firstName.charAt(0).toUpperCase()}${student.lastName.charAt(0).toUpperCase()}`}
+
+            </Avatar>
+          )
+        },
+        {
           title: 'Student Id',
           dataIndex: 'studentId',
           key: 'studentId'
@@ -60,7 +73,18 @@ class App extends Component {
         key: 'gender'
       }
       ];
-      return <Table dataSource={students} columns={columns} rowKey='studentId' />;
+      return (
+      
+      <Container>
+      <Table 
+      dataSource={students} 
+      columns={columns} 
+      rowKey='studentId'
+      pagination={false} />
+
+      </Container>
+      );
+
     }
   
      return <h1>No Students found</h1>

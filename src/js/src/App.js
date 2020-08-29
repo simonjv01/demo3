@@ -3,15 +3,19 @@ import Container from './Container';
 import './App.css';
 import { getAllStudents } from './client'; 
 import {
-  Table
+  Table,
+  Spin,
+  Avatar
 }  from 'antd';
-import Avatar from 'antd/lib/avatar/avatar';
+import Icon from '@ant-design/icons';
 
+const getIndicatorIcon = () => <Icon type="loading" style={{ fontSize: 24 }} spin />
 
 class App extends Component {
 
   state = {
-    students: []
+    students: [],
+    isFetching: false
   }
 
   componentDidMount () {
@@ -20,19 +24,33 @@ class App extends Component {
   }
 
   fetchStudents = () => {
+    this.setState({
+      isFetching: true
+    });
     getAllStudents()
     .then(res => res.json()
     .then(students => {
       console.log(students);
       this.setState({
-        students
+        students,
+        isFetching: false
       });
     }));
   }
   
   render() {
     
-    const { students } = this.state;
+   
+
+    const { students, isFetching } = this.state;
+
+    if (isFetching) {
+      return (
+        <Container>
+          <Spin indicator={getIndicatorIcon()}/>
+        </Container>
+      );
+    }
 
     if (students && students.length) {
 
